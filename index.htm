@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Text to Speech</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+
+	<style>
+		body {
+			font-family: "Varela Round", sans-serif;
+			background: #333;
+			color: rgba(255, 255, 255, 0.9);
+		}
+
+		#loader,
+		#statement {
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			margin: 0;
+		}
+
+		#statement {
+			font-size: 4.5rem;
+		}
+	</style>
+</head>
+
+<body id="body">
+	<p id="loader">Please click the screen to start.</p>
+	<h1 id="statement"></h1>
+
+	<script>
+		function run(statement) {
+			function StartCallback() {
+				$("body").css("background", "#4CAF50");
+				document.getElementById("loader").innerHTML = "";
+				document.getElementById("statement").innerHTML = statement;
+
+				console.log("Speaking...");
+			}
+			function EndCallback() {
+				$("body").css("background", "");
+				document.getElementById("loader").innerHTML = "Please click the screen to restart.";
+				document.getElementById("statement").innerHTML = "";
+
+				console.log("Done speaking.");
+			}
+
+			if (responsiveVoice.voiceSupport()) {
+				document.getElementById("loader").innerHTML = "Loading...";
+
+				responsiveVoice.speak(statement, "UK English Male", { onstart: StartCallback, onend: EndCallback });
+			}
+		}
+
+		$(document).ready(function () {
+			var statement = "Hello World!";
+
+			$(document).click(function () {
+				run(statement);
+			});
+		});
+	</script>
+
+</body>
+
+</html>
